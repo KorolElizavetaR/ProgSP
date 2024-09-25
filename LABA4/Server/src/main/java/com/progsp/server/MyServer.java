@@ -8,7 +8,7 @@ import lombok.Getter;
 
 public class MyServer {
 	@Getter
-	private static Integer clientCounter = 0;
+	private volatile static Integer clientCounter = 0;
 	private static final Integer PORT = 1234;
 	private static ServerSocket server;
 	static MyServer instanceOfMyServer;

@@ -10,27 +10,25 @@ public class ExecutedThread extends Thread{
 	
 	ExecutedThread(Socket socket)
 	{
-		super();
-		this.socket = socket;
-	}
-	
-	@Override
-	public void run() {
-		MyServer.increaseClientCounter(); // нарушает S, но хз как иначе
-		Scanner in = null;
-		try {
-			in = new Scanner(socket.getInputStream());
-			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-	        System.out.print("Input awaited....");
-	        int A = in.nextInt();
-	        int B = in.nextInt();
-	        out.println(A+B);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			in.close();
-			MyServer.decreaseClientCounter();
-			System.out.println("Thread is executed. Counter: " + MyServer.getClientCounter());
+		super(() ->
+		{
+			MyServer.increaseClientCounter(); // нарушает S, но хз как иначе
+			Scanner in = null;
+			try {
+				in = new Scanner(socket.getInputStream());
+				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		        int A = in.nextInt();
+		        int B = in.nextInt();
+		        out.println(A+B);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				in.close();
+				MyServer.decreaseClientCounter();
+				System.out.println("Thread is executed. Counter: " + MyServer.getClientCounter());
+			}
 		}
+		);
+		this.socket = socket;
 	}
 }
