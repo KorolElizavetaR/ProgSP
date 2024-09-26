@@ -1,14 +1,16 @@
-package com.progsp.server;
+package com.progsp.server.threads;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ExecutedThread extends Thread{
+import com.progsp.server.MyServer;
+
+public class LogicThread extends Thread{
 	private Socket socket;
 	
-	ExecutedThread(Socket socket)
+	LogicThread(Socket socket)
 	{
 		super(() ->
 		{
