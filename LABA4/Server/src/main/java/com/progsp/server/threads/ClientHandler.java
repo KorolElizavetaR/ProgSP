@@ -17,7 +17,8 @@ public class ClientHandler extends Thread{
 		while (!Thread.currentThread().isInterrupted()) {
 			try
 			{
-			LogicThread executionThread = new LogicThread(instance.getSocket());
+			//LogicThread executionThread = new LogicThread(instance.getSocket());
+			ApartmentFetcherThread executionThread = new ApartmentFetcherThread(instance.getSocket());
 			executionThread.start();
 			Thread.sleep(1);
 			System.out.println("Thread started execution: " + MyServer.getClientCounter());

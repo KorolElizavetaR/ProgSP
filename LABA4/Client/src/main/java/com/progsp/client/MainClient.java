@@ -23,16 +23,19 @@ public class MainClient {
         Scanner in = new Scanner(socket.getInputStream());
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-        System.out.print("A: ");
-        int A = scanner.nextInt();
-        System.out.print("B: ");
-        int B = scanner.nextInt();
+        System.out.print("Min: ");
+        int min = scanner.nextInt();
+        System.out.print("Max: ");
+        int max = scanner.nextInt();
 
-        out.println(A);
-        out.println(B);
-
-        int GCD = in.nextInt();
-        System.out.println("GCD: " + GCD);
+        out.println(min);
+        out.println(max);
+        
+        while (in.hasNextLine())
+        {
+        	System.out.println(in.nextLine());
+        }
+       
         socket.close();
     }
 }

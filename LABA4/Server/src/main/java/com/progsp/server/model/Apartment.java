@@ -31,6 +31,6 @@ public class Apartment {
 	@Column (name = "price")
 	private BigDecimal price;
 	
-	@Column (name = "address")
+	@Column (name = "currency")
 	private String currency;
 }
