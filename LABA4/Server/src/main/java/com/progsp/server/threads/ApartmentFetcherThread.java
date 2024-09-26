@@ -15,9 +15,11 @@ import com.progsp.server.dao.ApartmentDAO;
 import com.progsp.server.model.Apartment;
 
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Component ("apartmentFetcherThread")
 @Scope (ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Accessors (chain = true)
 public class ApartmentFetcherThread extends Thread {
 	@Setter
 	private Socket socket;
@@ -32,6 +34,12 @@ public class ApartmentFetcherThread extends Thread {
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 	        int min = in.nextInt();
 	        int max = in.nextInt();
+	        if (min > max)
+	        {
+	        	int tmp = min;
+	        	min = max;
+	        	max = tmp;
+	        }
 	        List <Apartment> apartments =  apartmentDAO.fetchByMinMaxCost(min, max);
 	       	for (Apartment apartment: apartments)
 	       		out.println(apartment);

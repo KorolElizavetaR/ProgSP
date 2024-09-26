@@ -24,9 +24,9 @@ public class ClientHandler extends Thread{
 		while (!Thread.currentThread().isInterrupted()) {
 			try
 			{
-			// изменить на getbean ApartmentFetcherThread executionThread = new ApartmentFetcherThread(instance.getSocket());
-			ApartmentFetcherThread executionThread = context.getBean("apartmentFetcherThread", ApartmentFetcherThread.class);
-			executionThread.setSocket(instance.getSocket());
+			ApartmentFetcherThread executionThread = context.
+					getBean("apartmentFetcherThread", ApartmentFetcherThread.class).
+					setSocket(instance.getSocket());
 			executionThread.start();
 			Thread.sleep(1);
 			System.out.println("Thread started execution: " + MyServer.getClientCounter());
