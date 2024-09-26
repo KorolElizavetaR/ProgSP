@@ -6,14 +6,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 
 import com.progsp.server.model.Apartment;
 
 
 //singleton
+@Component ("apartmentDAO")
 public class ApartmentDAO {
 	Configuration conf = new Configuration().addAnnotatedClass(Apartment.class);
-	
+	// EntityManager
 	private Session SessionBuilder()
 	{
 		SessionFactory sessionFactory = conf.buildSessionFactory(); //только 1 раз

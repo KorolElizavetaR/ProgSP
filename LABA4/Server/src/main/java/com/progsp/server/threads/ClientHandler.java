@@ -2,14 +2,21 @@ package com.progsp.server.threads;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
+
 import com.progsp.server.MyServer;
 
+import lombok.RequiredArgsConstructor;
+
+@Component ("clientHandler")
+@RequiredArgsConstructor
 public class ClientHandler extends Thread{
-	static MyServer instance = null;
-	
-	public ClientHandler() throws IOException {
-		instance = MyServer.getInstanceOfMyServer();
-	}
+	@Autowired
+	private final MyServer instance;
+	@Autowired
+	private final AnnotationConfigApplicationContext context;
 	
 	@Override
 	public void run() {
@@ -17,8 +24,9 @@ public class ClientHandler extends Thread{
 		while (!Thread.currentThread().isInterrupted()) {
 			try
 			{
-			//LogicThread executionThread = new LogicThread(instance.getSocket());
-			ApartmentFetcherThread executionThread = new ApartmentFetcherThread(instance.getSocket());
+			// изменить на getbean ApartmentFetcherThread executionThread = new ApartmentFetcherThread(instance.getSocket());
+			ApartmentFetcherThread executionThread = context.getBean("apartmentFetcherThread", ApartmentFetcherThread.class);
+			executionThread.setSocket(instance.getSocket());
 			executionThread.start();
 			Thread.sleep(1);
 			System.out.println("Thread started execution: " + MyServer.getClientCounter());
