@@ -35,7 +35,7 @@ public class Frame extends JFrame{
                     infoAreaPanel.setInfo("Клиент зарегистрирован: " + clientInfo);
                     clientInputPanel.clearFields();
                 } else {
-                    infoAreaPanel.setInfo("Заполните все поля и согласитесь на обработку данных.");
+                    infoAreaPanel.setInfo("Заполните все поля.");
                 }
             }
         });

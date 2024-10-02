@@ -9,11 +9,10 @@ public class ClientInputPanel extends JPanel {
     private JComboBox<String> serviceBox;
     private JRadioButton maleRadio;
     private JRadioButton femaleRadio;
-    private JCheckBox agreeCheckBox;
     private JButton registerButton;
 
     public ClientInputPanel() {
-        setLayout(new GridLayout(7, 2));
+        setLayout(new GridLayout(6, 2));
 
         // Имя
         add(new JLabel("Имя:"));
@@ -27,7 +26,7 @@ public class ClientInputPanel extends JPanel {
 
         // Услуга
         add(new JLabel("Услуга:"));
-        String[] services = {"Стрижка", "Маникюр", "Массаж", "Косметология"};
+        String[] services = {"Стрижка", "Мелирование", "Окраска", "Ламинирование", "Лечение волос"};
         serviceBox = new JComboBox<>(services);
         add(serviceBox);
 
@@ -43,14 +42,13 @@ public class ClientInputPanel extends JPanel {
         genderPanel.add(maleRadio);
         genderPanel.add(femaleRadio);
         add(genderPanel);
-
-        // Согласие
-        agreeCheckBox = new JCheckBox("Согласен на обработку данных");
-        add(agreeCheckBox);
-
-        // Кнопка регистрации
+        
+        add(new JLabel(""));
+        
+        JPanel buttonPanel = new JPanel(new BorderLayout());
         registerButton = new JButton("Регистрация");
-        add(registerButton);
+        buttonPanel.add(registerButton, BorderLayout.CENTER); 
+        add(buttonPanel); 
     }
 
     public JButton getRegisterButton() {
@@ -62,9 +60,8 @@ public class ClientInputPanel extends JPanel {
         String phone = phoneField.getText();
         String service = (String) serviceBox.getSelectedItem();
         String gender = maleRadio.isSelected() ? "Мужской" : femaleRadio.isSelected() ? "Женский" : "";
-        boolean agreed = agreeCheckBox.isSelected();
 
-        if (name.isEmpty() || phone.isEmpty() || gender.isEmpty() || !agreed) {
+        if (name.isEmpty() || phone.isEmpty() || gender.isEmpty()) {
             return null;
         }
 
@@ -76,7 +73,5 @@ public class ClientInputPanel extends JPanel {
         phoneField.setText("");
         maleRadio.setSelected(false);
         femaleRadio.setSelected(false);
-        agreeCheckBox.setSelected(false);
     }
 }
-
