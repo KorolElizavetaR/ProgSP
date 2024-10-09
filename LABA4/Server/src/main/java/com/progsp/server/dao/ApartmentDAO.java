@@ -31,6 +31,7 @@ public class ApartmentDAO {
 				setParameter("min", min).setParameter("max", max).
 				getResultList();
 		transaction.commit();
+		session.close();
 		return apartments;
 	}
 }

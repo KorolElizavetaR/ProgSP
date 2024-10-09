@@ -18,7 +18,7 @@ public class TextPanel extends JPanel {
 
 	public TextPanel() {
 		initElements();
-		inputPanel.add(inputField, BorderLayout.CENTER); // Позволяем полю занимать все доступное пространство
+		inputPanel.add(inputField, BorderLayout.CENTER); 
         inputPanel.add(addButton, BorderLayout.EAST);
         add(inputPanel, BorderLayout.CENTER);
         add(deleteButton, BorderLayout.EAST);
@@ -26,7 +26,7 @@ public class TextPanel extends JPanel {
 
 	private void initElements() {
 		inputField = new JTextField();
-        inputField.setPreferredSize(new Dimension(200, 30));  // Задаем предпочтительный размер поля
+        inputField.setPreferredSize(new Dimension(200, 30));
 
         addButton = new JButton("Добавить");
         deleteButton = new JButton("Удалить");

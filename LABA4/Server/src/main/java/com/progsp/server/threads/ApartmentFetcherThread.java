@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 public class ApartmentFetcherThread extends Thread {
 	@Setter
 	private Socket socket;
-	private static ApartmentDAO apartmentDAO = new ApartmentDAO();
+	private static ApartmentDAO apartmentDAO;
 	
 	@Override
 	public void run() {
