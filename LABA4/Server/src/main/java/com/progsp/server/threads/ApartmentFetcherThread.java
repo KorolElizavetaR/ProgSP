@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,16 +15,19 @@ import com.progsp.server.MyServer;
 import com.progsp.server.dao.ApartmentDAO;
 import com.progsp.server.model.Apartment;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Component ("apartmentFetcherThread")
+@Component 
 @Scope (ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Accessors (chain = true)
+@RequiredArgsConstructor
 public class ApartmentFetcherThread extends Thread {
 	@Setter
 	private Socket socket;
-	private static ApartmentDAO apartmentDAO;
+	@Autowired
+	private final ApartmentDAO apartmentDAO;
 	
 	@Override
 	public void run() {
