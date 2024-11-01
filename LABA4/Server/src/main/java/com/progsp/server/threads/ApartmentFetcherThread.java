@@ -20,39 +20,52 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Component 
-@Scope (ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Accessors (chain = true)
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Accessors(chain = true)
 @RequiredArgsConstructor
 public class ApartmentFetcherThread extends Thread {
-	@Setter
-	private Socket socket;
-	@Autowired
-	private final ApartmentDAO apartmentDAO;
-	
-	@Override
-	public void run() {
-		MyServer.increaseClientCounter(); // нарушает S, но хз как иначе
-		Scanner in = null;
-		try {
-			in = new Scanner(socket.getInputStream());
-			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-	        int min = in.nextInt();
-	        int max = in.nextInt();
-	        if (min > max)
-	        {
-	        	int tmp = min;
-	        	min = max;
-	        	max = tmp;
-	        }
-	        List <Apartment> apartments =  apartmentDAO.fetchByMinMaxCost(min, max);
-	       	for (Apartment apartment: apartments)
-	       		out.println(apartment);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			in.close();
-			MyServer.decreaseClientCounter();
-			System.out.println("Thread is executed. Counter: " + MyServer.getClientCounter());
-		}
-	}
+    @Setter
+    private Socket socket;
+    @Autowired
+    private final ApartmentDAO apartmentDAO;
+
+    @Override
+    public void run() {
+        MyServer.increaseClientCounter(); 
+        try (Scanner in = new Scanner(socket.getInputStream());
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+
+            while (!socket.isClosed()) { // Keep running until the client disconnects
+                if (in.hasNextInt()) { // Wait for min and max input
+                    int min = in.nextInt();
+                    int max = in.nextInt();
+
+                    // Check if the client sent the exit signal
+                    if (min == -1 && max == -1) {
+                        System.out.println("Received exit signal from client. Closing connection.");
+                        break; // Exit the loop to close the connection
+                    }
+
+                    // Validate and adjust if min > max
+                    if (min > max) {
+                        int temp = min;
+                        min = max;
+                        max = temp;
+                    }
+
+                    // Fetch apartments and send back to client
+                    List<Apartment> apartments = apartmentDAO.fetchByMinMaxCost(min, max);
+                    for (Apartment apartment : apartments) {
+                        out.println(apartment);
+                    }
+                    out.println("END"); // Signal end of response
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            MyServer.decreaseClientCounter();
+            System.out.println("Thread is executed. Counter: " + MyServer.getClientCounter());
+        }
+    }
 }
